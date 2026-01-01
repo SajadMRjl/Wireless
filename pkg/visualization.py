@@ -5,7 +5,6 @@ Creates interactive maps, heatmaps, and analysis plots.
 
 from typing import List, Dict, Any, Optional
 import numpy as np
-import pandas as pd
 import folium
 from folium.plugins import HeatMap
 import matplotlib.pyplot as plt

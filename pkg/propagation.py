@@ -141,16 +141,6 @@ def combine_signal_paths(power_list_dbm: List[float]) -> float:
     return power_combined_dbm
 
 
-def dbm_to_watts(power_dbm: float) -> float:
-    """Convert dBm to Watts."""
-    return 10 ** ((power_dbm - 30) / 10)
-
-
-def watts_to_dbm(power_watts: float) -> float:
-    """Convert Watts to dBm."""
-    return 10 * np.log10(power_watts * 1000)
-
-
 def calculate_rssi_at_point(
     point_lat: float,
     point_lon: float,

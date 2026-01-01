@@ -5,12 +5,9 @@ Implements z-score based anomaly detection and DBSCAN spatial clustering.
 
 from typing import List, Dict, Any, Optional, Union, Tuple
 import numpy as np
-import pandas as pd
 from sklearn.cluster import DBSCAN
-from scipy.optimize import least_squares
 import config
 from propagation import calculate_rssi_at_point
-from drive_test_simulator import get_rssi_vector_from_measurement
 
 
 def build_expected_coverage_map(bts_list: List[Dict[str, Any]], measurement_points: List[Union[Dict[str, Any], Tuple[float, float]]], add_noise: bool = False) -> List[Dict[str, Any]]:
