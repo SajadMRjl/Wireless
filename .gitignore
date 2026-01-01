@@ -163,7 +163,7 @@ $RECYCLE.BIN/
 # data/*.csv
 
 # Project specific - Generated HTML outputs (uncomment if you don't want to track outputs)
-# *.html
+# output/*.html
 
 # Temporary files
 *.tmp

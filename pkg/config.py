@@ -63,9 +63,9 @@ OUTPUT_PATHS = {
     'bts_csv': './data/bts_stations.csv',
     'repeaters_csv': './data/repeaters.csv',
     'measurements_csv': './data/drive_test_measurements.csv',
-    'main_map_html': 'tehran_network_map.html',
-    'comparison_map_html': 'detection_comparison.html',
-    'anomaly_analysis_html': 'anomaly_analysis.html',
+    'main_map_html': './output/tehran_network_map.html',
+    'comparison_map_html': './output/detection_comparison.html',
+    'anomaly_analysis_html': './output/anomaly_analysis.html',
 }
 
 # Random seed for reproducibility
