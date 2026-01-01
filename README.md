@@ -32,16 +32,15 @@ wireless-project/
 │   ├── bts_stations.csv           # BTS locations
 │   ├── repeaters.csv              # Repeater locations
 │   └── drive_test_measurements.csv # Measurement data
-├── src/                            # Source code
+├── pkg/                            # Package source code
 │   ├── config.py                  # Configuration parameters
 │   ├── bts_generator.py           # BTS and repeater generation
 │   ├── propagation.py             # Friis equation implementation
 │   ├── drive_test_simulator.py    # Measurement simulation
 │   ├── detection.py               # Detection algorithm
 │   └── visualization.py           # Interactive maps and plots
-├── notebooks/                      # Jupyter notebooks
-│   ├── 01_setup_and_generation.ipynb
-│   └── 02_simulation_and_detection.ipynb
+├── 02_simulation_and_detection.ipynb  # Main Jupyter notebook
+├── *.html                          # Visualization output files
 ├── requirements.txt               # Python dependencies
 └── README.md                      # This file
 ```
@@ -66,7 +65,7 @@ Generate the entire simulation from command line:
 
 ```bash
 # Step 1: Generate BTS and repeaters
-cd src
+cd pkg
 python bts_generator.py
 
 # Step 2: Simulate drive test
@@ -88,7 +87,7 @@ For interactive analysis and visualization:
 jupyter notebook
 
 # Open and run:
-# - notebooks/02_simulation_and_detection.ipynb
+# - 02_simulation_and_detection.ipynb
 ```
 
 ## How It Works
@@ -162,7 +161,7 @@ Compares detected repeater locations with actual planted locations:
 
 ## Configuration
 
-Edit `src/config.py` to adjust simulation parameters:
+Edit `pkg/config.py` to adjust simulation parameters:
 
 ```python
 # Example: Change number of BTS
