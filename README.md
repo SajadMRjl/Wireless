@@ -27,20 +27,23 @@ This project simulates a mobile network in Tehran, Iran, with Base Transceiver S
 ## Project Structure
 
 ```
-wireless-project/
+Wireless/
 ├── data/                           # Generated data files
 │   ├── bts_stations.csv           # BTS locations
 │   ├── repeaters.csv              # Repeater locations
 │   └── drive_test_measurements.csv # Measurement data
+├── output/                         # Visualization output files
+│   ├── tehran_network_map.html    # Main interactive map
+│   └── detection_comparison.html  # Side-by-side comparison maps
 ├── pkg/                            # Package source code
+│   ├── __init__.py                # Package initialization
 │   ├── config.py                  # Configuration parameters
 │   ├── bts_generator.py           # BTS and repeater generation
 │   ├── propagation.py             # Friis equation implementation
 │   ├── drive_test_simulator.py    # Measurement simulation
 │   ├── detection.py               # Detection algorithm
 │   └── visualization.py           # Interactive maps and plots
-├── 02_simulation_and_detection.ipynb  # Main Jupyter notebook
-├── *.html                          # Visualization output files
+├── simulation_and_detection.ipynb  # Main Jupyter notebook
 ├── requirements.txt               # Python dependencies
 └── README.md                      # This file
 ```
@@ -49,7 +52,7 @@ wireless-project/
 
 1. **Clone or download the project**:
    ```bash
-   cd wireless-project
+   cd Wireless
    ```
 
 2. **Install dependencies**:
@@ -65,17 +68,16 @@ Generate the entire simulation from command line:
 
 ```bash
 # Step 1: Generate BTS and repeaters
-cd pkg
-python bts_generator.py
+python -m pkg.bts_generator
 
 # Step 2: Simulate drive test
-python drive_test_simulator.py
+python -m pkg.drive_test_simulator
 
 # Step 3: Detect repeaters
-python detection.py
+python -m pkg.detection
 
 # Step 4: Create visualizations
-python visualization.py
+python -m pkg.visualization
 ```
 
 ### Option 2: Use Jupyter Notebooks (Recommended)
@@ -87,7 +89,12 @@ For interactive analysis and visualization:
 jupyter notebook
 
 # Open and run:
-# - 02_simulation_and_detection.ipynb
+# - simulation_and_detection.ipynb
+```
+
+Or use JupyterLab:
+```bash
+jupyter lab
 ```
 
 ## How It Works
@@ -183,10 +190,9 @@ The simulation generates:
    - `data/repeaters.csv`: Repeater locations and parameters
    - `data/drive_test_measurements.csv`: All measurement data
 
-2. **Visualization Files** (HTML):
-   - `tehran_network_map.html`: Main interactive map
-   - `detection_comparison.html`: Side-by-side comparison maps
-   - `anomaly_analysis.html`: Detailed anomaly visualizations
+2. **Visualization Files** (HTML in `output/` directory):
+   - `output/tehran_network_map.html`: Main interactive map
+   - `output/detection_comparison.html`: Side-by-side comparison maps
 
 ## Key Results
 
