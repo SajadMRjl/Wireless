@@ -7,8 +7,8 @@ from typing import List, Dict, Any, Optional, Tuple
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
-import config
-from propagation import calculate_rssi_at_point
+from . import config
+from .propagation import calculate_rssi_at_point
 
 
 def generate_measurement_grid(bounds: Optional[Dict[str, float]] = None, grid_spacing_m: Optional[float] = None) -> List[Tuple[float, float]]:

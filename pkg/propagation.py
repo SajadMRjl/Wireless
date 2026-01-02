@@ -8,20 +8,6 @@ import numpy as np
 from geopy.distance import geodesic
 
 
-def calculate_distance_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
-    """
-    Calculate distance between two geographic coordinates.
-
-    Args:
-        lat1, lon1: First point coordinates
-        lat2, lon2: Second point coordinates
-
-    Returns:
-        Distance in kilometers
-    """
-    return geodesic((lat1, lon1), (lat2, lon2)).km
-
-
 def friis_path_loss(distance_km: float, frequency_mhz: float, tx_gain_dbi: float = 0, rx_gain_dbi: float = 0) -> float:
     """
     Calculate path loss using Friis transmission equation.
@@ -173,10 +159,7 @@ def calculate_rssi_at_point(
 
     for bts in bts_list:
         # Calculate direct path from BTS to measurement point
-        dist_direct = calculate_distance_km(
-            bts['lat'], bts['lon'],
-            point_lat, point_lon
-        )
+        dist_direct = geodesic((bts['lat'], bts['lon']), (point_lat, point_lon)).km
 
         rssi_direct = calculate_received_power(
             tx_power_dbm=bts['tx_power_dbm'],
@@ -192,10 +175,7 @@ def calculate_rssi_at_point(
         for repeater in repeater_list:
             if repeater.get('serving_bts_id') == bts['id']:
                 # Path: BTS -> Repeater
-                dist_bts_to_rep = calculate_distance_km(
-                    bts['lat'], bts['lon'],
-                    repeater['lat'], repeater['lon']
-                )
+                dist_bts_to_rep = geodesic((bts['lat'], bts['lon']), (repeater['lat'], repeater['lon'])).km
 
                 rssi_at_repeater = calculate_received_power(
                     tx_power_dbm=bts['tx_power_dbm'],
@@ -209,10 +189,7 @@ def calculate_rssi_at_point(
                 rssi_repeater_output = rssi_at_repeater + repeater['gain_db']
 
                 # Path: Repeater -> Measurement point
-                dist_rep_to_point = calculate_distance_km(
-                    repeater['lat'], repeater['lon'],
-                    point_lat, point_lon
-                )
+                dist_rep_to_point = geodesic((repeater['lat'], repeater['lon']), (point_lat, point_lon)).km
 
                 # Calculate path loss from repeater to point
                 path_loss_rep_to_point = friis_path_loss(

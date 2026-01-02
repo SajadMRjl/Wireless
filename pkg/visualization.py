@@ -10,7 +10,7 @@ from folium.plugins import HeatMap
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from geopy.distance import geodesic
-import config
+from . import config
 
 
 def create_base_map(center_lat: Optional[float] = None, center_lon: Optional[float] = None, zoom: Optional[int] = None) -> folium.Map:

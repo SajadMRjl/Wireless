@@ -7,7 +7,7 @@ from typing import List, Dict, Optional, Any
 import numpy as np
 import pandas as pd
 from geopy.distance import geodesic
-import config
+from . import config
 
 
 def generate_bts_stations(
