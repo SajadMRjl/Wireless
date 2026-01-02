@@ -15,7 +15,7 @@ TEHRAN_BOUNDS = {
 BTS_CONFIG = {
     'frequency_mhz': 1800,  # LTE Band 3 (1800 MHz) - realistic frequency
     'tx_power_dbm': 43,  # Typical macro cell transmit power (40-46 dBm)
-    'antenna_gain_dbi': 18,  # BTS antenna gain (15-20 dBi typical)
+    'antenna_gain_dbi': 15,  # BTS antenna gain (reduced for urban model)
     'antenna_height_m': 30,  # Typical cell tower height (25-50m)
     'separation_km': 1,  # distance between BTS (1-2 km urban)
 }
@@ -23,12 +23,12 @@ BTS_CONFIG = {
 # Repeater Parameters
 REPEATER_CONFIG = {
     'count': 3,  # Number of unauthorized repeaters
-    'gain_db': 70,  # Amplifier gain
+    'gain_db': 25,  # Amplifier gain (typical consumer repeater: 20-30 dB)
 }
 
 # Drive Test Parameters
 DRIVE_TEST_CONFIG = {
-    'grid_spacing_m': 50,  # Spacing between measurement points
+    'grid_spacing_m': 100,  # Spacing between measurement points
     'rx_antenna_gain_dbi': 0,  # Mobile device antenna gain
     'sensitivity_floor_dbm': -110,  # Minimum detectable signal
 }

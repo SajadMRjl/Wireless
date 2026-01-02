@@ -147,35 +147,79 @@ def add_detection_error_line(map_obj: folium.Map, detected: Dict[str, Any], actu
 
 def add_signal_heatmap(map_obj: folium.Map, measurements: List[Dict[str, Any]]) -> None:
     """
-    Add signal strength heatmap to map.
+    Add signal strength heatmap to map using colored circle markers.
+    
+    Uses color gradient: Red (weak) → Yellow (medium) → Green (strong)
 
     Args:
         map_obj: Folium Map object
         measurements: List of measurement dictionaries
     """
-    # Extract coordinates and RSSI values
-    heat_data = []
-
+    if not measurements:
+        return
+    
+    # Get actual RSSI range from data
+    rssi_values = [m.get('serving_rssi', -110) for m in measurements]
+    min_rssi = min(rssi_values)
+    max_rssi = max(rssi_values)
+    rssi_range = max_rssi - min_rssi if max_rssi != min_rssi else 1
+    
+    # Create feature group for signal markers
+    signal_layer = folium.FeatureGroup(name="Signal Strength")
+    
     for meas in measurements:
         lat = meas['lat']
         lon = meas['lon']
         rssi = meas.get('serving_rssi', -110)
-
-        # Normalize RSSI to 0-1 range for heatmap intensity
-        # Typical range: -110 dBm (weak) to -50 dBm (strong)
-        normalized_intensity = (rssi + 110) / 60  # 0 to 1
-        normalized_intensity = max(0, min(1, normalized_intensity))
-
-        heat_data.append([lat, lon, normalized_intensity])
-
-    # Add heatmap layer
-    HeatMap(
-        heat_data,
-        radius=config.VIZ_CONFIG['heatmap_radius'],
-        blur=config.VIZ_CONFIG['heatmap_blur'],
-        min_opacity=0.3,
-        max_zoom=13
-    ).add_to(map_obj)
+        
+        # Normalize to 0-1 based on actual data range
+        normalized = (rssi - min_rssi) / rssi_range
+        
+        # Color gradient: red (0) → yellow (0.5) → green (1)
+        if normalized < 0.5:
+            # Red to Yellow
+            r = 255
+            g = int(255 * (normalized * 2))
+            b = 0
+        else:
+            # Yellow to Green
+            r = int(255 * (1 - (normalized - 0.5) * 2))
+            g = 255
+            b = 0
+        
+        color = f'#{r:02x}{g:02x}{b:02x}'
+        
+        folium.CircleMarker(
+            location=[lat, lon],
+            radius=5,
+            color=color,
+            fill=True,
+            fillColor=color,
+            fillOpacity=0.7,
+            weight=1,
+            popup=f"RSSI: {rssi:.1f} dBm"
+        ).add_to(signal_layer)
+    
+    signal_layer.add_to(map_obj)
+    
+    # Add legend
+    legend_html = f'''
+    <div style="position: fixed; bottom: 50px; left: 50px; z-index: 1000;
+                background: white; padding: 10px; border-radius: 5px;
+                border: 2px solid gray; font-family: Arial;">
+        <b>Signal Strength (dBm)</b><br>
+        <div style="display: flex; align-items: center; margin-top: 5px;">
+            <div style="width: 150px; height: 20px; 
+                        background: linear-gradient(to right, #ff0000, #ffff00, #00ff00);"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; width: 150px;">
+            <span>{min_rssi:.0f}</span>
+            <span>{(min_rssi + max_rssi) / 2:.0f}</span>
+            <span>{max_rssi:.0f}</span>
+        </div>
+    </div>
+    '''
+    map_obj.get_root().html.add_child(folium.Element(legend_html))
 
 
 def add_anomaly_overlay(map_obj: folium.Map, anomalies: List[Dict[str, Any]]) -> None:

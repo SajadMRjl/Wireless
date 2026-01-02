@@ -10,16 +10,10 @@ from geopy.distance import geodesic
 
 def friis_path_loss(distance_km: float, frequency_mhz: float, tx_gain_dbi: float = 0, rx_gain_dbi: float = 0) -> float:
     """
-    Calculate path loss using Friis transmission equation.
+    Calculate path loss using Cost-231 Hata model for urban environments.
 
-    Formula: PL(d) = 20*log10(d) + 20*log10(f) + 32.45 - Gt - Gr
-
-    Where:
-    - d is distance in km
-    - f is frequency in MHz
-    - Gt is transmit antenna gain in dBi
-    - Gr is receive antenna gain in dBi
-    - 32.45 is the constant for km and MHz units
+    This is more realistic than free-space Friis for urban cellular networks.
+    Uses path loss exponent of ~3.5 for urban environments instead of 2.0.
 
     Args:
         distance_km: Distance between transmitter and receiver (km)
@@ -30,11 +24,15 @@ def friis_path_loss(distance_km: float, frequency_mhz: float, tx_gain_dbi: float
     Returns:
         Path loss in dB
     """
-    if distance_km <= 0:
-        return 0  # No path loss at zero distance
+    # Minimum distance to avoid singularity (10 meters)
+    distance_km = max(distance_km, 0.01)
 
+    # Cost-231 Hata model approximation for urban environment
+    # PL = 46.3 + 33.9*log10(f) - 13.82*log10(hb) + (44.9 - 6.55*log10(hb))*log10(d) + C
+    # Simplified version with typical urban parameters:
+    # Uses path loss exponent ~3.5 instead of free-space 2.0
     path_loss = (
-        20 * np.log10(distance_km) +
+        35 * np.log10(distance_km) +  # Urban path loss exponent ~3.5
         20 * np.log10(frequency_mhz) +
         32.45 -
         tx_gain_dbi -
@@ -47,7 +45,7 @@ def friis_path_loss(distance_km: float, frequency_mhz: float, tx_gain_dbi: float
 def calculate_received_power(tx_power_dbm: float, distance_km: float, frequency_mhz: float,
                              tx_gain_dbi: float = 0, rx_gain_dbi: float = 0) -> float:
     """
-    Calculate received power using Friis equation.
+    Calculate received power using path loss model.
 
     Formula: Pr(d) = Pt - PL(d)
 
@@ -63,10 +61,13 @@ def calculate_received_power(tx_power_dbm: float, distance_km: float, frequency_
         rx_gain_dbi: Receive antenna gain in dBi
 
     Returns:
-        Received power in dBm
+        Received power in dBm (clamped to realistic range)
     """
     path_loss = friis_path_loss(distance_km, frequency_mhz, tx_gain_dbi, rx_gain_dbi)
     received_power = tx_power_dbm - path_loss
+
+    # Clamp to realistic RSSI range: -120 dBm (noise floor) to -30 dBm (very close)
+    received_power = max(-120, min(-30, received_power))
 
     return received_power
 
@@ -187,8 +188,8 @@ def calculate_rssi_at_point(
                 rx_gain_dbi=0  # Repeater input
             )
 
-            # Repeater amplifies the signal
-            rssi_repeater_output = rssi_at_repeater + repeater['gain_db']
+            # Repeater amplifies the signal (capped at 30 dBm max output - 1 Watt)
+            rssi_repeater_output = min(30, rssi_at_repeater + repeater['gain_db'])
 
             # Path: Repeater -> Measurement point
             dist_rep_to_point = geodesic((repeater['lat'], repeater['lon']), (point_lat, point_lon)).km
