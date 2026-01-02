@@ -78,14 +78,20 @@ def generate_bts_stations(
                     break
 
             if valid_location:
+                # Add realistic variation to BTS parameters
+                # Real networks have slight variations in equipment
+                power_variation = np.random.uniform(-2, 2)  # ±2 dBm variation
+                gain_variation = np.random.uniform(-1, 1)  # ±1 dBi variation
+                height_variation = np.random.uniform(-5, 10)  # Height variation: -5m to +10m
+                
                 bts = {
                     'id': f'BTS_{i+1:03d}',
                     'lat': lat,
                     'lon': lon,
                     'frequency_mhz': frequency_mhz,
-                    'tx_power_dbm': tx_power_dbm,
-                    'antenna_gain_dbi': antenna_gain_dbi,
-                    'antenna_height_m': config.BTS_CONFIG['antenna_height_m']
+                    'tx_power_dbm': tx_power_dbm + power_variation,  # Realistic variation
+                    'antenna_gain_dbi': antenna_gain_dbi + gain_variation,  # Realistic variation
+                    'antenna_height_m': max(15, config.BTS_CONFIG['antenna_height_m'] + height_variation)  # Min 15m
                 }
                 bts_list.append(bts)
                 break

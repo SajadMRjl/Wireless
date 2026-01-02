@@ -5,20 +5,20 @@ Contains all simulation parameters for Tehran mobile network.
 
 # Geographic Bounds (Tehran)
 TEHRAN_BOUNDS = {
-    'lat_min': 35.56,
-    'lat_max': 35.80,
-    'lon_min': 51.20,
-    'lon_max': 51.60
+    'lat_min': 35.730266,
+    'lat_max': 35.758200,
+    'lon_min': 51.500422,
+    'lon_max': 51.536223
 }
 
 # BTS (Base Transceiver Station) Parameters
 BTS_CONFIG = {
-    'count': 8,  # Number of BTS stations (5-10)
-    'frequency_mhz': 1800,  # LTE Band 3
-    'tx_power_dbm': 43,  # Typical macro cell transmit power
-    'antenna_gain_dbi': 18,  # BTS antenna gain
-    'antenna_height_m': 30,  # Typical cell tower height
-    'min_separation_km': 1.5,  # Minimum distance between BTS
+    'count': 8,  # Number of BTS stations (6-10 for good urban coverage)
+    'frequency_mhz': 1800,  # LTE Band 3 (1800 MHz) - realistic frequency
+    'tx_power_dbm': 43,  # Typical macro cell transmit power (40-46 dBm)
+    'antenna_gain_dbi': 18,  # BTS antenna gain (15-20 dBi typical)
+    'antenna_height_m': 30,  # Typical cell tower height (25-50m)
+    'min_separation_km': 1.5,  # Minimum distance between BTS (1-2 km urban)
 }
 
 # Repeater Parameters
