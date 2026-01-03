@@ -131,10 +131,6 @@ def calculate_rssi_at_point(
         for repeater in repeater_list:
             # Repeaters repeat signals from ALL BTS stations
             
-            # Check if point is within repeater coverage range (max 500m)
-            dist_rep_point = geodesic((repeater['lat'], repeater['lon']), (point_lat, point_lon)).km
-
-            
             # BTS -> Repeater (repeater's input antenna assumed 0 dBi)
             dist_bts_rep = geodesic((bts['lat'], bts['lon']), (repeater['lat'], repeater['lon'])).km
 
@@ -143,18 +139,17 @@ def calculate_rssi_at_point(
                 distance_km=dist_bts_rep,
                 frequency_mhz=frequency_mhz,
                 tx_gain_dbi=bts['antenna_gain_dbi'],
-                rx_gain_dbi=0  # Repeater input antenna (not mobile device)
+                rx_gain_dbi=repeater['gain_rx_db']  # Repeater input antenna
             )
             
-            # Repeater amplifies (with realistic output power limit of 20 dBm = 100mW)
-            repeater_output = min(20, rssi_at_repeater + repeater['gain_db'])
-
             # Repeater -> Point (using lower antenna height for repeater)
+            dist_rep_point = geodesic((repeater['lat'], repeater['lon']), (point_lat, point_lon)).km
+
             rssi_via_repeater = calculate_received_power(
-                tx_power_dbm=repeater_output,
+                tx_power_dbm=rssi_at_repeater,
                 distance_km=dist_rep_point,
                 frequency_mhz=frequency_mhz,
-                tx_gain_dbi=0,
+                tx_gain_dbi=repeater['gain_tx_db'],
                 rx_gain_dbi=rx_gain_dbi
             )
 

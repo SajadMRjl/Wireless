@@ -23,7 +23,8 @@ BTS_CONFIG = {
 # Repeater Parameters
 REPEATER_CONFIG = {
     'count': 3,  # Number of unauthorized repeaters
-    'gain_db': 50,  # Amplifier gain (enough to create detectable boost)
+    'gain_tx_db': 60,  # Repeater output antenna gain
+    'gain_rx_db': 60,  # Repeater input antenna gain
 }
 
 # Drive Test Parameters
@@ -36,12 +37,12 @@ DRIVE_TEST_CONFIG = {
 # Noise Model Parameters
 NOISE_CONFIG = {
     'log_normal_sigma_db': 4,  # Standard deviation for log-normal shadowing (reduced for cleaner viz)
-    'use_noise': False,  # Enable/disable noise for testing
+    'use_noise': True,  # Enable/disable noise for testing
 }
 
 # Detection Algorithm Parameters
 DETECTION_CONFIG = {
-    'z_score_threshold': 2.5,  # One-sided z-score threshold
+    'z_score_threshold': 3.5,  # One-sided z-score threshold
     'dbscan_eps_m': 300,  # DBSCAN clustering radius (meters)
     'dbscan_min_samples': 3,  # Minimum points per cluster
 }

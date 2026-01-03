@@ -86,7 +86,8 @@ def generate_repeaters(
     bts_list: List[Dict[str, Any]],
     num_repeaters: Optional[int] = None,
     bounds: Optional[Dict[str, float]] = None,
-    gain_db: Optional[float] = None,
+    gain_tx_db: Optional[float] = None,
+    gain_rx_db: Optional[float] = None,
     random_seed: Optional[int] = None
 ) -> List[Dict[str, Any]]:
     """
@@ -110,8 +111,10 @@ def generate_repeaters(
         num_repeaters = config.REPEATER_CONFIG['count']
     if bounds is None:
         bounds = config.TEHRAN_BOUNDS
-    if gain_db is None:
-        gain_db = config.REPEATER_CONFIG['gain_db']
+    if gain_tx_db is None:
+        gain_tx_db = config.REPEATER_CONFIG['gain_tx_db']
+    if gain_rx_db is None:
+        gain_rx_db = config.REPEATER_CONFIG['gain_rx_db']
     if random_seed is None:
         random_seed = config.RANDOM_SEED
 
@@ -158,7 +161,8 @@ def generate_repeaters(
                         'id': f'REP_{i+1:03d}',
                         'lat': lat,
                         'lon': lon,
-                        'gain_db': gain_db
+                        'gain_tx_db': gain_tx_db,
+                        'gain_rx_db': gain_rx_db,
                     }
                     repeater_list.append(repeater)
                     break

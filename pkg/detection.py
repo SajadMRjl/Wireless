@@ -7,7 +7,6 @@ from typing import List, Dict, Any, Optional
 import numpy as np
 from sklearn.cluster import DBSCAN
 from . import config
-from .drive_test_simulator import simulate_result_without_repeaters
 
 def calculate_residuals(measurements: List[Dict[str, Any]], predictions: List[Dict[str, Any]], bts_list: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
