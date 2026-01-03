@@ -23,7 +23,7 @@ BTS_CONFIG = {
 # Repeater Parameters
 REPEATER_CONFIG = {
     'count': 3,  # Number of unauthorized repeaters
-    'gain_db': 30,  # Amplifier gain (enough to create detectable boost)
+    'gain_db': 50,  # Amplifier gain (enough to create detectable boost)
 }
 
 # Drive Test Parameters
@@ -42,7 +42,7 @@ NOISE_CONFIG = {
 # Detection Algorithm Parameters
 DETECTION_CONFIG = {
     'z_score_threshold': 2.5,  # One-sided z-score threshold
-    'dbscan_eps_m': 400,  # DBSCAN clustering radius (meters)
+    'dbscan_eps_m': 300,  # DBSCAN clustering radius (meters)
     'dbscan_min_samples': 3,  # Minimum points per cluster
 }
 

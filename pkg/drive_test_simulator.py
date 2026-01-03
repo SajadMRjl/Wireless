@@ -221,23 +221,3 @@ def get_rssi_vector_from_measurement(measurement: Dict[str, Any], bts_list: List
             rssi_vector[bts_id] = config.DRIVE_TEST_CONFIG['sensitivity_floor_dbm']
 
     return rssi_vector
-
-
-if __name__ == '__main__':
-    from bts_generator import load_bts_from_csv, load_repeaters_from_csv
-
-    # Load BTS and repeaters
-    print("Loading BTS and repeaters...")
-    bts_stations = load_bts_from_csv()
-    repeaters = load_repeaters_from_csv()
-
-    # Run drive test simulation
-    measurements = simulate_drive_test(
-        bts_list=bts_stations,
-        repeater_list=repeaters,
-        add_noise=True
-    )
-
-    print(f"\nDrive test complete!")
-    print(f"Total measurements: {len(measurements)}")
-    print(f"Sample measurement: {measurements[0] if measurements else 'None'}")

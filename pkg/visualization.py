@@ -456,32 +456,3 @@ def plot_detection_metrics(validation_metrics: Dict[str, Any]) -> Figure:
     plt.tight_layout()
 
     return fig
-
-
-if __name__ == '__main__':
-    from bts_generator import load_bts_from_csv, load_repeaters_from_csv
-    from drive_test_simulator import load_measurements_from_csv
-    from detection import detect_repeaters, validate_detection, build_expected_coverage_map
-
-    # Load data
-    print("Loading data...")
-    bts_stations = load_bts_from_csv()
-    actual_repeaters = load_repeaters_from_csv()
-    measurements = load_measurements_from_csv()
-
-    # Run detection
-    detected_repeaters = detect_repeaters(measurements, bts_stations)
-
-    # Validate
-    metrics = validate_detection(detected_repeaters, actual_repeaters)
-
-    # Create visualizations
-    create_main_detection_map(
-        bts_list=bts_stations,
-        actual_repeaters=actual_repeaters,
-        detected_repeaters=detected_repeaters,
-        measurements=measurements,
-        validation_metrics=metrics
-    )
-
-    print("\nVisualization complete!")

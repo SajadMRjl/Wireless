@@ -132,7 +132,7 @@ def generate_repeaters(
         while attempts < max_attempts:
             # Generate random angle and distance
             angle = np.random.uniform(0, 2 * np.pi)
-            distance_km = np.random.uniform(0, 1)
+            distance_km = np.random.uniform(0.33, 0.66)
 
             # Calculate approximate lat/lon offset
             # At Tehran's latitude, 1 degree lat ≈ 111 km, 1 degree lon ≈ 92 km
